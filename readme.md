@@ -3,15 +3,16 @@ This module contains several functions useful for evaluating integrals and gener
 Author: [Max Kapur](maxkapur.com).
 
 ### Examples
-Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for workflow examples.
 
-<div style="text-align: center;">
-
-![wave](wave.png)
+Generate uniformly distributed random points along a parametric curve:
 
 ![spiral](spiral.png)
 
-</div>
+Generate uniformly distributed random points on a parametric surface:
+
+![wave](wave.png)
+
+Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for workflow examples.
 
 ### Calculating arc lengths and surface areas
 
