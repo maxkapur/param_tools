@@ -1,6 +1,6 @@
 This module contains several functions useful for evaluating integrals and generating random points on parametric curves and surfaces.
 
-Author: [Max Kapur](maxkapur.com).
+Author: [Max Kapur](maxkapur.com)
 
 ### Examples
 
