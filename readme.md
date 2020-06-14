@@ -16,7 +16,7 @@ Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for wor
 
 ### Calculating arc lengths and surface areas
 
-`arc_cumulator()` and `surface_cumulator()` take data coordinates as input and return the arc length or area accumulated at each point. If the parameterizing function is known, the convenience functions return the total arc length or surface area over the given region. The precision arguments to `arc_length()` and `surface_area()` determine how many subintervals will be evaluated.
+`arc_cumulator()` and `surface_cumulator()` take data coordinates as input and return the arc length or area accumulated at each point. If the parameterizing function is known, the convenience functions `arc_length()` and `surface_area()` return the total arc length or surface area over the given region. The precision arguments to `arc_length()` and `surface_area()` determine how many subintervals will be evaluated.
 
 ### Generating random data
 
