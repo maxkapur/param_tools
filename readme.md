@@ -6,9 +6,11 @@ Author: [Max Kapur](maxkapur.com).
 Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for workflow examples.
 
 <div style="text-align: center;">
+
 ![wave](wave.png)
 
 ![spiral](spiral.png)
+
 </div>
 
 ### Calculating arc lengths and surface areas
