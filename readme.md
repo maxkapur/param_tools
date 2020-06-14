@@ -16,7 +16,7 @@ Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for wor
 
 ### Calculating arc lengths and surface areas
 
-`arc_cumulator()` and `surface_cumulator()` take data coordinates as input and return the arc length or area accumulated at each point. The convenience functions `arc_length()` and `surface_area()` return the total arc length or surface area over the given region. The precision arguments determine how many subintervals will be evaluated.
+`arc_cumulator()` and `surface_cumulator()` take data coordinates as input and return the arc length or area accumulated at each point. If the parameterizing function is known, the convenience functions return the total arc length or surface area over the given region. The precision arguments to `arc_length()` and `surface_area()` determine how many subintervals will be evaluated.
 
 ### Generating random data
 
@@ -29,16 +29,16 @@ For a curve given by a list of point coordinates and (optionally) corresponding 
 Mathematically, the procedure for sampling a random point on an arc given by `f(t)` on `[t0, t1]` is as follows: 
 
  1. Numerically compute the total arc length `P`.
- 2. Pick a random number `s` on `[0,P)`. 
+ 2. Pick a random number `s` on `[0, P)`. 
  3. Determine, by interpolation, `t` such that the arc length on `[t0, t]` is `s`.
  4. Return `f(t)`.
  
 For a surface given by `f(t, u)`, the process is similar: 
 
  1. Numerically compute the total area `A`. 
- 2. Independently pick two random numbers `S1` and `S2` on `[0,A)`.
- 3. Determine, by interpolation, t such that the surface area on `[t0,t], [u0,u1]` is `S1`.
- 4. Determine, by interpolation, u such that the surface area on `[t0, t1], [u0,u]` is `S2`.
+ 2. Independently pick two random numbers `S1` and `S2` on `[0, A)`.
+ 3. Determine, by interpolation, t such that the surface area on `[t0, t], [u0, u1]` is `S1`.
+ 4. Determine, by interpolation, u such that the surface area on `[t0, t1], [u0, u]` is `S2`.
  5. Return `f(t, u)`.
  
 ### Acknowledgements
