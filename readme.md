@@ -1,4 +1,13 @@
-This module contains several functions useful for working with parametric curves and surfaces. 
+This module contains several functions useful for evaluating integrals and generating random points on parametric curves and surfaces.
+
+Author: [Max Kapur](maxkapur.com).
+
+### Examples
+![wave](wave.png)
+
+![spiral](spiral.png)
+
+Please see the Jupyter notebook `examples.ipynb` or its HTML counterpart for workflow examples.
 
 ### Calculating arc lengths and surface areas
 
@@ -26,9 +35,6 @@ For a surface given by $f(t, u)$, the process is similar:
  3. Determine, by interpolation, t such that the surface area on $[t_0,t], [u_0,u_1]$ is $S_1$.
  4. Determine, by interpolation, u such that the surface area on $[t0, t1], [u0,u]$ is $S_2$.
  5. Return $f(t, u)$.
- 
-### Examples
-Please see the file `examples.ipynb` or its HTML counterpart for workflow  examples.
  
 ### Acknowledgements
 The following Stack Exchange discussions were of assistance in creating this module:
