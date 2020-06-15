@@ -292,7 +292,7 @@ def r_surface(n, func, t0, t1, u0, u1, t_precision=25, u_precision=25):
     Generates random points distributed uniformly over a parametric surface.
     """
     
-    t, u = np.meshgrid(np.linspace(t0, t1, t_precision), np.linspace(t0, t1, t_precision))
+    t, u = np.meshgrid(np.linspace(t0, t1, t_precision), np.linspace(u0, u1, u_precision))
     coords = func(t, u)
     
     rand_t, rand_u, rand_S_t, rand_S_u = r_surface_from_data(n, t, u, coords, interp=False)
@@ -321,7 +321,7 @@ def surface_area(func, t0, t1, u0, u1, t_precision=25, u_precision=25):
     Convenience function to evaluate total surface area over given range.    
     """
     
-    t, u = np.meshgrid(np.linspace(t0, t1, t_precision), np.linspace(t0, t1, t_precision))
+    t, u = np.meshgrid(np.linspace(t0, t1, t_precision), np.linspace(u0, u1, u_precision))
     coords = func(t, u)
     
     area = surface_cumulator(t, u, coords)[3][-1]
