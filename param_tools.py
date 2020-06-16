@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import interp1d, interp2d
+from scipy.optimize import brentq
 
 
 def arc_cumulator(t, coords):
@@ -144,6 +145,88 @@ def arc_length(func, t0, t1, precision=225):
     length = arc_cumulator(t, coords)[1][-1]
 
     return length
+
+
+def sample_to_arc(sample, func, t0=0, precision=225, kind='linear', ub=1e11):
+    """
+    Parameters
+    ----------
+    sample : array
+        Arc lengths at which to generate points.
+    func : function
+        Parametric function describing the curve on which points should
+        be generated.
+    t0 : float
+        t-value to regard as having zero arc length.
+    precision : int
+        Number of t-values at which func is evaluated when computing
+        arc length.
+    kind : str
+        Interpolation method to be passed to scipy.interp1d.
+    ub : float
+        Upper bound for t-values used when searching for extremes of
+        distribution in brentq. An arbitrary large number.
+
+    Returns
+    -------
+    sample_x : array
+        Coordinates associated with sample arc lengths.
+    sample_t : array
+        Parameters associated with the coordinates.
+
+    Maps a sample of arc lengths (e.g. np.random.normal(size=100)) to points
+    along the curve given by func. Negative arc lengths are mapped to t-values
+    below t0.
+
+    This function is designed to take arbitrary samples as input. If you know
+    the bounds of the sample data, arc_cumulator() followed by interp1d() will
+    be more efficient (see examples).
+    """
+    # Separately compute the arc length on [0, t0] to offset sample
+    # Passing func(t-t0) throws an error in brentq
+    if t0 != 0:
+        offset = arc_length(func, 0, t0, precision)
+        sample = sample + offset * np.sign(t0)
+
+    # Split sample into negative and positive components
+    sign_idx = sample < 0
+    sample_neg = np.abs(sample[sign_idx])
+    sample_pos = sample[~sign_idx]
+
+    # Compute extremes of sample
+    s_min = np.abs(sample.min())
+    s_max = sample.max()
+
+    if sample_neg.size == 0:
+        sample_t_neg = np.empty(0)
+    else:
+        # Find negative t-value at which Euclidean distance is s_min. By Cauchy-Schwartz,
+        # the arc length is greater than s_min, so we will be able to interpolate.
+        t_min = -brentq(lambda t: np.linalg.norm([func(-t), func(0)]) - s_min, 0, ub)
+
+        # Perform the interpolation and generate t-values for sample arc lengths.
+        arc_t_neg = np.linspace(0, t_min, precision)
+        coords_neg = func(arc_t_neg)
+        arc_cum_s_neg = arc_cumulator(arc_t_neg, coords_neg)[1]
+        sample_t_neg = interp1d(arc_cum_s_neg, arc_t_neg, kind=kind)(sample_neg)
+
+    if sample_pos.size == 0:
+        sample_t_pos = np.empty(0)
+    else:
+        # As above, for positive component of sample
+        t_max = brentq(lambda t: np.linalg.norm([func(t), func(0)]) - s_max, 0, ub)
+        arc_t_pos = np.linspace(0, t_max, precision)
+        coords_pos = func(arc_t_pos)
+        arc_cum_s_pos = arc_cumulator(arc_t_pos, coords_pos)[1]
+        sample_t_pos = interp1d(arc_cum_s_pos, arc_t_pos, kind=kind)(sample_pos)
+
+    # Recombine negative and positive components and evaluated function.
+    sample_t = np.empty_like(sample, dtype='float64')
+    sample_t[sign_idx] = sample_t_neg
+    sample_t[~sign_idx] = sample_t_pos
+    sample_x = func(sample_t)
+
+    return sample_x, sample_t
 
 
 def surface_cumulator(t, u, coords):
