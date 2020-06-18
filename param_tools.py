@@ -200,8 +200,9 @@ def sample_to_arc(sample, func, t0=0, precision=225, kind='linear', ub=1e11):
     if sample_neg.size == 0:
         sample_t_neg = np.empty(0)
     else:
-        # Find negative t-value at which Euclidean distance is s_min. By Cauchy-Schwartz,
-        # the arc length is greater than s_min, so we will be able to interpolate.
+        # Find negative t-value at which Euclidean distance is s_min. By the triangle
+        # inequality, the arc length is greater than s_min, so this t-range will be
+        # wide enough to interpolate the whole sample.
         t_min = -brentq(lambda t: np.linalg.norm([func(-t), func(0)]) - s_min, 0, ub)
 
         # Perform the interpolation and generate t-values for sample arc lengths.
@@ -220,7 +221,7 @@ def sample_to_arc(sample, func, t0=0, precision=225, kind='linear', ub=1e11):
         arc_cum_s_pos = arc_cumulator(arc_t_pos, coords_pos)[1]
         sample_t_pos = interp1d(arc_cum_s_pos, arc_t_pos, kind=kind)(sample_pos)
 
-    # Recombine negative and positive components and evaluated function.
+    # Recombine negative and positive components and evaluate function.
     sample_t = np.empty_like(sample, dtype='float64')
     sample_t[sign_idx] = sample_t_neg
     sample_t[~sign_idx] = sample_t_pos
